@@ -1,4 +1,4 @@
-package com.example.clips
+package com.goldinguy.clips
 
 import io.flutter.embedding.android.FlutterActivity
 
