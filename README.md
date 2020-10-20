@@ -2,7 +2,7 @@
 
 🔥 An example Flutter app for firebase login and authentication
 
-When attempting to set up a firebase login in flutter I found a plethora of decent examples, but many were ugly, outdated, or overcomplicated, so I put together a one-page solution that looks somewhat decent based on the [FlutterFire Auth Example](https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_auth/firebase_auth/example)
+When attempting to set up authentication with firebase in flutter I found a plethora of decent examples, but many were ugly, outdated, or overcomplicated, so I put together a one-page solution that looks somewhat decent based on the [FlutterFire Auth Example](https://github.com/FirebaseExtended/flutterfire/tree/master/packages/firebase_auth/firebase_auth/example)
 
 <img src="https://user-images.githubusercontent.com/47064842/96534823-81de7e00-125e-11eb-8130-e2965f657679.jpg" width="30%"></img> 
 
