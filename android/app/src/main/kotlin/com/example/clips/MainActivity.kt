@@ -1,4 +1,4 @@
-package com.goldinguy.clips
+package com.goldinguy.firelogin
 
 import io.flutter.embedding.android.FlutterActivity
 

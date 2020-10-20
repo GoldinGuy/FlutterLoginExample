@@ -6,27 +6,19 @@ import 'pages/login.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ClipsApp());
+  runApp(FireloginApp());
 }
 
-class ClipsApp extends StatelessWidget {
+class FireloginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Clips',
+        title: 'firelogin',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        routes: {'/login': (_) => LoginPage(), '/home': (_) => HomePage()},
+        routes: {
+          '/login': (_) => LoginPage(),
+        },
         home: LoginPage());
   }
 }
-
-// /// Provides a UI to select a authentication type page
-// class AuthTypeSelector extends StatelessWidget {
-//   // Navigates to a new page
-//   void _pushPage(BuildContext context, Widget page) {
-//     Navigator.of(context).push(
-//       MaterialPageRoute<void>(builder: (_) => page),
-//     );
-//   }
-// }

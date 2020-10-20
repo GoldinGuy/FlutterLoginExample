@@ -33,31 +33,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          // appBar: AppBar(
-          //   title: Text('Clips Login'),
-          //   actions: <Widget>[
-          //     Builder(builder: (BuildContext context) {
-          //       return FlatButton(
-          //         child: const Text('Sign out'),
-          //         textColor: Theme.of(context).buttonColor,
-          //         onPressed: () async {
-          //           final User user = _auth.currentUser;
-          //           if (user == null) {
-          //             Scaffold.of(context).showSnackBar(const SnackBar(
-          //               content: Text('No one has signed in.'),
-          //             ));
-          //             return;
-          //           }
-          //           _signOut();
-          //           final String uid = user.uid;
-          //           Scaffold.of(context).showSnackBar(SnackBar(
-          //             content: Text(uid + ' has successfully signed out.'),
-          //           ));
-          //         },
-          //       );
-          //     })
-          //   ],
-          // ),
           body: Builder(builder: (BuildContext context) {
             return Form(
               key: _formKey,
@@ -70,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: EdgeInsets.only(top: 110, bottom: 60),
                           child: Text(
-                            'Clips',
+                            'firelogin',
                             style: TextStyle(fontSize: 40, color: Colors.white),
                           ),
                         ),
