@@ -4,7 +4,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseAuth _fauth = FirebaseAuth.instance;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,9 +13,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _success;
+  final TextEditingController _emailCntrl = TextEditingController();
+  final TextEditingController _passwordCntrl = TextEditingController();
+  bool _registerSuccess;
   String _userEmail;
 
   @override
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: EdgeInsets.all(10.0),
                           child: TextFormField(
-                            controller: _emailController,
+                            controller: _emailCntrl,
                             decoration: InputDecoration(
                               errorStyle: TextStyle(height: 0),
                               labelText: "Email",
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: TextFormField(
-                            controller: _passwordController,
+                            controller: _passwordCntrl,
                             decoration: InputDecoration(
                               errorStyle: TextStyle(height: 0),
                               labelText: "Password",
@@ -162,9 +162,9 @@ class _LoginPageState extends State<LoginPage> {
                                       Scaffold.of(context)
                                           .showSnackBar(SnackBar(
                                         content: Text(
-                                          _success == null
+                                          _registerSuccess == null
                                               ? ''
-                                              : (_success
+                                              : (_registerSuccess
                                                   ? 'Successfully registered ' +
                                                       _userEmail
                                                   : 'Registration failed'),
@@ -216,16 +216,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _emailCntrl.dispose();
+    _passwordCntrl.dispose();
     super.dispose();
   }
 
   void _signInWithEmailAndPassword(BuildContext context) async {
     try {
-      final User user = (await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+      final User user = (await _fauth.signInWithEmailAndPassword(
+        email: _emailCntrl.text,
+        password: _passwordCntrl.text,
       ))
           .user;
 
@@ -250,12 +250,12 @@ class _LoginPageState extends State<LoginPage> {
       UserCredential userCredential;
       if (kIsWeb) {
         GithubAuthProvider githubProvider = GithubAuthProvider();
-        userCredential = await _auth.signInWithPopup(githubProvider);
+        userCredential = await _fauth.signInWithPopup(githubProvider);
       } else {
         // TODO: replace with actual github access token
         final AuthCredential credential =
             GithubAuthProvider.credential('GithubAcessToken');
-        userCredential = await _auth.signInWithCredential(credential);
+        userCredential = await _fauth.signInWithCredential(credential);
       }
 
       final user = userCredential.user;
@@ -283,7 +283,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (kIsWeb) {
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
-        userCredential = await _auth.signInWithPopup(googleProvider);
+        userCredential = await _fauth.signInWithPopup(googleProvider);
       } else {
         final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
         final GoogleSignInAuthentication googleAuth =
@@ -293,7 +293,8 @@ class _LoginPageState extends State<LoginPage> {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        userCredential = await _auth.signInWithCredential(googleAuthCredential);
+        userCredential =
+            await _fauth.signInWithCredential(googleAuthCredential);
       }
 
       final user = userCredential.user;
@@ -316,22 +317,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _register() async {
-    final User user = (await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
+    final User user = (await _fauth.createUserWithEmailAndPassword(
+      email: _emailCntrl.text,
+      password: _passwordCntrl.text,
     ))
         .user;
     if (user != null) {
       setState(() {
-        _success = true;
+        _registerSuccess = true;
         _userEmail = user.email;
       });
     } else {
-      _success = false;
+      _registerSuccess = false;
     }
   }
 
   void _signOut() async {
-    await _auth.signOut();
+    await _fauth.signOut();
   }
 }
