@@ -154,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     onPressed: () async {
                                       if (_formKey.currentState.validate()) {
-                                        _signInWithEmailAndPassword();
+                                        _signInWithEmailAndPassword(context);
                                       }
                                     },
                                   ),
@@ -184,6 +184,18 @@ class _LoginPageState extends State<LoginPage> {
                                       if (_formKey.currentState.validate()) {
                                         _register();
                                       }
+                                      Scaffold.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(
+                                          _success == null
+                                              ? ''
+                                              : (_success
+                                                  ? 'Successfully registered ' +
+                                                      _userEmail
+                                                  : 'Registration failed'),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ));
                                     },
                                   ),
                                 ),
@@ -191,13 +203,6 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        Container(
-                            alignment: Alignment.center,
-                            child: Text(_success == null
-                                ? ''
-                                : (_success
-                                    ? 'Successfully registered ' + _userEmail
-                                    : 'Registration failed'))),
                         SizedBox(
                           height: 15,
                         ),
@@ -213,14 +218,14 @@ class _LoginPageState extends State<LoginPage> {
                             Buttons.Google,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            onPressed: () => _signInWithGoogle(),
+                            onPressed: () => _signInWithGoogle(context),
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 3),
                         ),
                         Container(
                           child: SignInButton(
                             Buttons.GitHub,
-                            onPressed: () => _signInWithGithub(),
+                            onPressed: () => _signInWithGithub(context),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                           ),
@@ -241,7 +246,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _signInWithEmailAndPassword() async {
+  void _signInWithEmailAndPassword(BuildContext context) async {
     try {
       final User user = (await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -250,16 +255,22 @@ class _LoginPageState extends State<LoginPage> {
           .user;
 
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("${user.email} signed in"),
+        content: Text(
+          "${user.email} signed in",
+          textAlign: TextAlign.center,
+        ),
       ));
     } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to sign in with Email & Password"),
+        content: Text(
+          "Failed to sign in with Email & Password",
+          textAlign: TextAlign.center,
+        ),
       ));
     }
   }
 
-  void _signInWithGithub() async {
+  void _signInWithGithub(BuildContext context) async {
     try {
       UserCredential userCredential;
       if (kIsWeb) {
@@ -275,17 +286,23 @@ class _LoginPageState extends State<LoginPage> {
       final user = userCredential.user;
 
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Sign In ${user.uid} with GitHub"),
+        content: Text(
+          "Sign In ${user.uid} with GitHub",
+          textAlign: TextAlign.center,
+        ),
       ));
     } catch (e) {
       print(e);
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to sign in with GitHub: $e"),
+        content: Text(
+          "Failed to sign in with GitHub: $e",
+          textAlign: TextAlign.center,
+        ),
       ));
     }
   }
 
-  void _signInWithGoogle() async {
+  void _signInWithGoogle(BuildContext context) async {
     try {
       UserCredential userCredential;
 
@@ -306,13 +323,19 @@ class _LoginPageState extends State<LoginPage> {
 
       final user = userCredential.user;
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Sign In ${user.uid} with Google"),
+        content: Text(
+          "Sign In ${user.uid} with Google",
+          textAlign: TextAlign.center,
+        ),
       ));
     } catch (e) {
       print(e);
 
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to sign in with Google: $e"),
+        content: Text(
+          "Failed to sign in with Google: $e",
+          textAlign: TextAlign.center,
+        ),
       ));
     }
   }

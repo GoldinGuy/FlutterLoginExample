@@ -1,4 +1,3 @@
-import 'package:clips/pages/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +16,7 @@ class ClipsApp extends StatelessWidget {
         title: 'Clips',
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        routes: {'/login': (_) => LoginPage(), '/signup': (_) => SignUpPage()},
+        routes: {'/login': (_) => LoginPage(), '/home': (_) => HomePage()},
         home: LoginPage());
   }
 }
