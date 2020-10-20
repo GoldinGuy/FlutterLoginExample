@@ -15,6 +15,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _success;
+  String _userEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -115,20 +117,102 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: SignInButton(
-                            Buttons.Email,
-                            text: "Login",
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                _signInWithEmailAndPassword();
-                              }
-                            },
+                        SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                          height: 45.0,
+                          width: 240.0,
+                          child: Material(
+                            shape: StadiumBorder(),
+                            textStyle: Theme.of(context).textTheme.button,
+                            elevation: 2.0,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: RaisedButton(
+                                    elevation: 0.0,
+                                    color: Color(0xff5b8e7d),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            left: Radius.circular(50))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Login",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        _signInWithEmailAndPassword();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Expanded(
+                                  child: RaisedButton(
+                                    elevation: 0.0,
+                                    color: Color(0xffbc4b51),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.horizontal(
+                                            right: Radius.circular(50))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Register",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      if (_formKey.currentState.validate()) {
+                                        _register();
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        Container(
+                            alignment: Alignment.center,
+                            child: Text(_success == null
+                                ? ''
+                                : (_success
+                                    ? 'Successfully registered ' + _userEmail
+                                    : 'Registration failed'))),
+                        // Container(
+                        //   padding: const EdgeInsets.only(top: 16.0),
+                        //   child: SignInButtonBuilder(
+                        //     icon: Icons.email,
+                        //     backgroundColor: Color(0xff5b8e7d),
+                        //     text: 'Login',
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(10)),
+                        //     onPressed: () async {
+                        //       if (_formKey.currentState.validate()) {
+                        //         _signInWithEmailAndPassword();
+                        //       }
+                        //     },
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 15,
                         ),
@@ -139,18 +223,18 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 15,
                         ),
-                        Container(
-                          child: SignInButtonBuilder(
-                            icon: Icons.person_add,
-                            backgroundColor: Colors.indigo,
-                            text: 'Register',
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/signup'),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 3),
-                        ),
+                        // Container(
+                        //   child: SignInButtonBuilder(
+                        //     icon: Icons.person_add,
+                        //     backgroundColor: Color(0xff8cb369),
+                        //     text: 'Register',
+                        //     shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(10)),
+                        //     onPressed: () =>
+                        //         Navigator.pushNamed(context, '/signup'),
+                        //   ),
+                        //   padding: const EdgeInsets.symmetric(vertical: 3),
+                        // ),
                         Container(
                           child: SignInButton(
                             Buttons.Google,
@@ -257,6 +341,22 @@ class _LoginPageState extends State<LoginPage> {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with Google: $e"),
       ));
+    }
+  }
+
+  void _register() async {
+    final User user = (await _auth.createUserWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ))
+        .user;
+    if (user != null) {
+      setState(() {
+        _success = true;
+        _userEmail = user.email;
+      });
+    } else {
+      _success = false;
     }
   }
 
